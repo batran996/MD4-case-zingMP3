@@ -3,6 +3,7 @@ package rikkei.academy.model.song;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import rikkei.academy.model.User;
 import rikkei.academy.model.song.Category;
 
 import javax.persistence.*;
@@ -22,5 +23,7 @@ public class Song {
     private Category category;
     @Lob
     private String song;
+    @ManyToOne
+    private User user;
 
 }

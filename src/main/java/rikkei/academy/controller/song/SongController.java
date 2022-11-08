@@ -9,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rikkei.academy.dto.request.SongDTO;
 import rikkei.academy.dto.response.ResponseMessage;
+import rikkei.academy.model.User;
 import rikkei.academy.model.song.Category;
 import rikkei.academy.model.song.Song;
+import rikkei.academy.security.userprincipal.UserDetailServiceIMPL;
 import rikkei.academy.service.category.ICategoryService;
 import rikkei.academy.service.song.ISongService;
 
@@ -24,6 +26,8 @@ public class SongController {
     private ISongService songService;
     @Autowired
     private ICategoryService categoryService;
+    @Autowired
+    private UserDetailServiceIMPL userDetailServiceIMPL;
     @GetMapping
     public ResponseEntity<?> findAllSong(@PageableDefault(size = (9))Pageable pageable){
         Page<Song> songs = songService.findAll(pageable);
@@ -35,6 +39,8 @@ public class SongController {
             SongDTO songDTO
     ){
         Song song = new Song();
+        User currentUser = userDetailServiceIMPL.getCurrentUser();
+        song.setUser(currentUser);
         song.setName(songDTO.getName());
         song.setSong(songDTO.getSong());
         Long idCategory  = songDTO.getIdCategory();
@@ -83,12 +89,16 @@ public ResponseEntity<?> deleteById(@PathVariable("id") Optional<Song> song){
         songService.deleteById(song.get().getId());
         return new ResponseEntity<>(new ResponseMessage("Delete success!!"),HttpStatus.OK);
     }
-    @GetMapping("search/{name}")
+    @GetMapping("/searchByName/{name}")
     public ResponseEntity<?> searchByName(@PathVariable String name){
         return new ResponseEntity<>(songService.findByNameContaining(name),HttpStatus.OK);
     }
-    @GetMapping("search/page")
+    @GetMapping("/search/page")
     public ResponseEntity<?> searchPageSong(@RequestParam String name, Pageable pageable){
         return new ResponseEntity<>(songService.findByNameContaining(name,pageable),HttpStatus.OK);
+    }
+    @GetMapping ("/searchByCategory/{nameCategory}")
+    public ResponseEntity<?> searchByCategory(@PathVariable Category category) {
+        return new ResponseEntity<>(categoryService.findByNameContaining(category.getName()), HttpStatus.OK);
     }
 }

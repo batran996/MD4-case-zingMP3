@@ -30,14 +30,28 @@ public class UserDetailServiceIMPL implements UserDetailsService {
 
     }
 
-    public User getCurrentUser() {
+    public User getCurrentUser(){
+        Optional<User> user;
+        String userName;
+        //Lay 1 object principal trong SecurityContexHolder
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserPrinciple) {
-            return userRepository.findByUsername(((UserPrinciple) principal).getUsername()).orElse(null);
+        //So sanh obj voi Userdetails neu ma dung thi gan userName = principal.getUsername();
+        if(principal instanceof UserDetails){
+            userName = ((UserDetails) principal).getUsername();
         } else {
-            return userRepository.findByUsername(String.valueOf(principal)).orElse(null);
+            //neu khong phai user hien tai thi userName = principal.toString();
+            userName = principal.toString();
         }
+        //kiem tra neu userName ton tai trong DB thi gan user = ham tim kiem trong DB theo userName do
+        if(userRepository.existsByUsername(userName)){
+            user = userService.findByUsername(userName);
+        } else {
+            //Neu chua ton tai thi tra ve 1 the hien cua lop User thong qua Optional.of
+            user = Optional.of(new User());
+            //set cho no 1 cai ten user an danh Day la truong hop ma tuong tac qua dang nhap kieu FB hay GG
+            user.get().setUsername("Anonymous");
+        }
+        return user.get();
     }
     //HAM LAY RA USER HIEN TAI DE THUC HIEN THAO TAC VOI DB
-
 }

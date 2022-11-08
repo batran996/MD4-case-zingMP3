@@ -48,7 +48,7 @@ public ResponseEntity<?> updateCategory(
     if (oldCategory==null){
     return new ResponseEntity<>(NOT_FOUND);
     }
-    oldCategory.setNameCategory(newCategory.getNameCategory());
+    oldCategory.setName(newCategory.getName());
     categoryService.save(oldCategory);
     return ResponseEntity.ok(oldCategory);
     }
@@ -61,9 +61,5 @@ public ResponseEntity<?> updateCategory(
         }
         categoryService.deleteById(category.getId());
         return ResponseEntity.ok(new ResponseMessage("delete"));
-    }
-    @GetMapping ("search/{name}")
-    public ResponseEntity<?> searchByName(@PathVariable String name) {
-        return new ResponseEntity<>(categoryService.findByNameContaining(name), HttpStatus.OK);
     }
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import rikkei.academy.model.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name="categories")
@@ -16,7 +17,8 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nameCategory;
+    @NotBlank
+    private String name;
 
     @ManyToOne
     private User user;
@@ -25,7 +27,7 @@ public class Category {
     public String toString() {
         return "Category{" +
                 "id=" + id +
-                ", name='" + nameCategory + '\'' +
+                ", nameCategory='" + name + '\'' +
                 ", user=" + user +
                 '}';
     }

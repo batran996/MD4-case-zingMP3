@@ -29,7 +29,7 @@ public class UserDetailServiceIMPL implements UserDetailsService {
         return UserPrinciple.build(user);
 
     }
-    //HAM LAY RA USER HIEN TAI DE THUC HIEN THAO TAC VOI DB
+
     public User getCurrentUser(){
         Optional<User> user;
         String userName;
@@ -53,4 +53,5 @@ public class UserDetailServiceIMPL implements UserDetailsService {
         }
         return user.get();
     }
+    //HAM LAY RA USER HIEN TAI DE THUC HIEN THAO TAC VOI DB
 }

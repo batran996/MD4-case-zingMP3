@@ -1,10 +1,12 @@
 package rikkei.academy.service.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import rikkei.academy.model.User;
 import rikkei.academy.repository.IUserRepository;
 
+import java.nio.file.attribute.UserPrincipal;
 import java.util.Optional;
 
 @Service
@@ -30,4 +32,6 @@ public class UserServiceIMPL implements IUSerService{
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
+
 }

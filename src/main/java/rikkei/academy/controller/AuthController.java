@@ -39,17 +39,18 @@ public class AuthController {
     JwtProvider jwtProvider;
     @Autowired
     private AuthenticationManager authenticationManager;
+
     @PostMapping("/signup")
-    public ResponseEntity<?> signUp(@RequestBody SignUpForm signUpForm){
-        if (uSerService.existsByUsername(signUpForm.getUsername())){
+    public ResponseEntity<?> signUp(@RequestBody SignUpForm signUpForm) {
+        if (uSerService.existsByUsername(signUpForm.getUsername())) {
             return new ResponseEntity<>(new ResponseMessage("username_existed"), HttpStatus.OK);
         }
-        if (uSerService.existsByEmail(signUpForm.getEmail())){
-            return new ResponseEntity<>(new ResponseMessage("email_existed"),HttpStatus.OK);
+        if (uSerService.existsByEmail(signUpForm.getEmail())) {
+            return new ResponseEntity<>(new ResponseMessage("email_existed"), HttpStatus.OK);
         }
 //        Set<String> strRoles = signUpForm.getRoles();
-        Set<Role>roles = new HashSet<>();
-        Role roleSignUp = roleService.findByName(RoleName.USER).orElseThrow(()-> new RuntimeException("not_found"));
+        Set<Role> roles = new HashSet<>();
+        Role roleSignUp = roleService.findByName(RoleName.USER).orElseThrow(() -> new RuntimeException("not_found"));
         roles.add(roleSignUp);
 
 //        strRoles.forEach(role->{
@@ -68,21 +69,19 @@ public class AuthController {
 //
 //            }
 //        });
-        User user = new User(signUpForm.getName(),signUpForm.getUsername(),signUpForm.getEmail(),passwordEncoder.encode(signUpForm.getPassword()),roles);
+        User user = new User(signUpForm.getName(), signUpForm.getUsername(), signUpForm.getEmail(), passwordEncoder.encode(signUpForm.getPassword()), signUpForm.getAvatar(), roles);
         uSerService.save(user);
-        return new ResponseEntity<>(new ResponseMessage("create_success"),HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("create_success"), HttpStatus.OK);
     }
     @PostMapping("/signin")
-    public ResponseEntity<?>signIn(@Valid @RequestBody SignIn signIn){
-
-
+    public ResponseEntity<?> signIn(@Valid @RequestBody SignIn signIn) {
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(signIn.getUsername(),signIn.getPassword())
+                new UsernamePasswordAuthenticationToken(signIn.getUsername(), signIn.getPassword())
         );
-//        System.out.println("check auth"+authentication);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtProvider.generateJwtToken(authentication);
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
-        return ResponseEntity.ok(new JwtResponse(token,userPrinciple.getName(),userPrinciple.getAuthorities()));
+
+        return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getName(), userPrinciple.getAvatar(), userPrinciple.getAuthorities()));
     }
 }

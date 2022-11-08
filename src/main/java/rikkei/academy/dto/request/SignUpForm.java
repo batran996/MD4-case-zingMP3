@@ -14,5 +14,6 @@ public class SignUpForm {
     private String username;
     private String email;
     private String password;
+    private String avatar = "https://vnn-imgs-f.vgcloud.vn/2020/03/23/11/trend-avatar-1.jpg";
 //    private Set<String> roles;
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import rikkei.academy.model.User;
 import rikkei.academy.repository.IUserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,5 +30,10 @@ public class UserServiceIMPL implements IUSerService{
     @Override
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 }

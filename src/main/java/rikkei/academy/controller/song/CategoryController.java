@@ -1,4 +1,4 @@
-package rikkei.academy.controller;
+package rikkei.academy.controller.song;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -6,11 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rikkei.academy.dto.response.ResponseMessage;
-import rikkei.academy.model.Category;
+import rikkei.academy.model.song.Category;
 import rikkei.academy.model.User;
 import rikkei.academy.security.userprincipal.UserDetailServiceIMPL;
 import rikkei.academy.service.category.ICategoryService;
-import rikkei.academy.service.user.IUSerService;
 
 import static org.springframework.http.HttpStatus.*;
 
@@ -49,7 +48,7 @@ public ResponseEntity<?> updateCategory(
     if (oldCategory==null){
     return new ResponseEntity<>(NOT_FOUND);
     }
-    oldCategory.setName(newCategory.getName());
+    oldCategory.setNameCategory(newCategory.getNameCategory());
     categoryService.save(oldCategory);
     return ResponseEntity.ok(oldCategory);
     }
@@ -62,5 +61,9 @@ public ResponseEntity<?> updateCategory(
         }
         categoryService.deleteById(category.getId());
         return ResponseEntity.ok(new ResponseMessage("delete"));
+    }
+    @GetMapping ("search/{name}")
+    public ResponseEntity<?> searchByName(@PathVariable String name) {
+        return new ResponseEntity<>(categoryService.findByNameContaining(name), HttpStatus.OK);
     }
 }

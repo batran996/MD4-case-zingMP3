@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import rikkei.academy.model.Category;
+import rikkei.academy.model.song.Category;
 import rikkei.academy.repository.ICategoryRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 @Transactional
 public class CategoryServiceIMPL implements ICategoryService{
@@ -35,7 +37,12 @@ public class CategoryServiceIMPL implements ICategoryService{
     }
 
     @Override
-    public Category findById(Long id) {
-        return categoryRepository.findById(id).orElse(null);
+    public Optional<Category> findById(Long id) {
+        return categoryRepository.findById(id);
+    }
+
+    @Override
+    public List<Category> findByNameContaining(String name) {
+        return categoryRepository.findByNameContaining(name);
     }
 }

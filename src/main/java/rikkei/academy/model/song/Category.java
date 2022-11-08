@@ -1,12 +1,11 @@
-package rikkei.academy.model;
+package rikkei.academy.model.song;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import rikkei.academy.model.User;
 
 import javax.persistence.*;
-
-import static jogamp.graph.font.typecast.ot.table.Table.name;
 
 @Entity
 @Table(name="categories")
@@ -17,7 +16,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String nameCategory;
 
     @ManyToOne
     private User user;
@@ -26,7 +25,7 @@ public class Category {
     public String toString() {
         return "Category{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + nameCategory + '\'' +
                 ", user=" + user +
                 '}';
     }

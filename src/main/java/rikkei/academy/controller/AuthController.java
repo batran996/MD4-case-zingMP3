@@ -79,7 +79,7 @@ public class AuthController {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signIn.getUsername(),signIn.getPassword())
         );
-        System.out.println("check auth"+authentication);
+//        System.out.println("check auth"+authentication);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtProvider.generateJwtToken(authentication);
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();

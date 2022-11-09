@@ -1,6 +1,9 @@
 package rikkei.academy.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -73,6 +76,7 @@ public class AuthController {
         uSerService.save(user);
         return new ResponseEntity<>(new ResponseMessage("create_success"), HttpStatus.OK);
     }
+
     @PostMapping("/signin")
     public ResponseEntity<?> signIn(@Valid @RequestBody SignIn signIn) {
         Authentication authentication = authenticationManager.authenticate(
@@ -84,4 +88,7 @@ public class AuthController {
 
         return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getName(), userPrinciple.getAvatar(), userPrinciple.getAuthorities()));
     }
+
+
+
 }

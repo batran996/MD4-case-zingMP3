@@ -1,5 +1,6 @@
 package rikkei.academy.service.user;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import rikkei.academy.model.User;
 
@@ -12,4 +13,5 @@ public interface IUSerService {
     void save(User user);
     Optional<User> findByUsername(String username);
     List<User> findAll();
+    Page<User> findAll(Pageable pageable);
 }

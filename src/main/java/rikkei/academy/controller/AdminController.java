@@ -47,18 +47,21 @@ public class AdminController {
             return new ResponseEntity<>(new ResponseMessage("user not found!!!"), HttpStatus.NOT_FOUND);
         }
 
-        User user = new User();
+        User user = userOptional.get();
         user.setId(id);
         user.setName(userDTO.getName());
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
-        user.setAvatar(userDTO.getAvatar());
+//        user.setAvatar(userDTO.getAvatar());
 
         Set<Role> roles = new HashSet<>();
-        Role userRole = (Role) userDTO.getRoles();
+        for (String idRole :
+                userDTO.getRoles()) {
+            Role userRole = roleService.findById(Long.parseLong(idRole));
+            roles.add(userRole);
+        }
 //        Role userRole = roleService.findByName(RoleName.USER).orElseThrow(() -> new RuntimeException("not_found"));
-       roles.add(userRole);
-
+        user.setRoles(roles);
         uSerService.save(user);
         return new ResponseEntity<>(new ResponseMessage("Edit user success!"), HttpStatus.OK);
     }

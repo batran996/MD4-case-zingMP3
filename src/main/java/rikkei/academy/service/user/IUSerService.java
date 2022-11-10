@@ -14,4 +14,8 @@ public interface IUSerService {
     Optional<User> findByUsername(String username);
     List<User> findAll();
     Page<User> findAll(Pageable pageable);
+
+    Optional<User> findById(Long id);
+
+    void deleteById(Long id);
 }

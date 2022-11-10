@@ -24,7 +24,7 @@ public class Song {
     private String name;
     @Lob
     private String song;
-    @ManyToOne
+    @ManyToOne()
     private User user;
     @ManyToOne
     private Category category;

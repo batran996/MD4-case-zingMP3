@@ -15,6 +15,7 @@ import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/api/categories")
+@CrossOrigin
 public class CategoryController {
     @Autowired
     private ICategoryService categoryService;

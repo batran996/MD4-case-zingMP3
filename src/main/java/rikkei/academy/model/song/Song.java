@@ -20,10 +20,14 @@ public class Song {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Lob
+    private String background;
     @NotBlank
     private String name;
     @Lob
-    private String song;
+    private String pathSong;
+    @NotBlank
+    private String duration;
     @ManyToOne
     private User user;
     @ManyToOne

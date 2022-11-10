@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import rikkei.academy.dto.request.SongDTO;
 import rikkei.academy.dto.response.ResponseMessage;
 
+//import rikkei.academy.dto.response.SongResponse;
 import rikkei.academy.model.song.Category;
 import rikkei.academy.model.song.Singer;
 import rikkei.academy.model.song.Song;
@@ -18,6 +19,7 @@ import rikkei.academy.service.category.ICategoryService;
 import rikkei.academy.service.singer.ISingerService;
 import rikkei.academy.service.song.ISongService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -93,4 +95,11 @@ public class SongController {
 //    public ResponseEntity<?> searchByCategory(@PathVariable("name") String name) {
 //        return new ResponseEntity<>(categoryService.findByNameContaining(name), HttpStatus.OK);
 //    }
+//@GetMapping("/list")
+//public ResponseEntity<?> listSong() {
+//    List<SongResponse> listSongRes= new ArrayList<>();
+//    SongResponse songResponse1= new SongResponse("1","1","1","1");
+//    listSongRes.add(songResponse1);
+//    return new ResponseEntity<>(listSongRes, HttpStatus.OK);
+//}
 }

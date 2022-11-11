@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import rikkei.academy.dto.request.SignIn;
 import rikkei.academy.dto.request.SignUpForm;
+import rikkei.academy.dto.request.UserDTO;
 import rikkei.academy.dto.response.JwtResponse;
 import rikkei.academy.dto.response.ResponseMessage;
 import rikkei.academy.model.Role;
@@ -26,6 +27,7 @@ import rikkei.academy.service.user.IUSerService;
 
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -87,6 +89,45 @@ public class AuthController {
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
 
         return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getName(), userPrinciple.getAvatar(), userPrinciple.getAuthorities()));
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> details(@PathVariable Long id) {
+        Optional<User> user = uSerService.findById(id);
+        if (!user.isPresent()) {
+            return new ResponseEntity<>(new ResponseMessage("user not found!!!"), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(user.get(), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editUser(
+            @PathVariable
+            Long id,
+            @RequestBody
+            UserDTO userDTO
+    ) {
+        Optional<User> userOptional = uSerService.findById(id);
+        if (!userOptional.isPresent()) {
+            return new ResponseEntity<>(new ResponseMessage("user not found!!!"), HttpStatus.NOT_FOUND);
+        }
+
+        User user = userOptional.get();
+        user.setId(id);
+        user.setName(userDTO.getName());
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(userDTO.getPassword());
+        user.setEmail(userDTO.getEmail());
+        user.setAvatar(userDTO.getAvatar());
+        Set<Role> roles = new HashSet<>();
+        for (String idRole :
+                userDTO.getRoles()) {
+            Role userRole = roleService.findById(Long.parseLong(idRole));
+            roles.add(userRole);
+        }
+//  Role userRole = roleService.findByName(RoleName.USER).orElseThrow(() -> new RuntimeException("not_found"));
+        user.setRoles(roles);
+        uSerService.save(user);
+        return new ResponseEntity<>(new ResponseMessage("Edit user success!"), HttpStatus.OK);
     }
 
 

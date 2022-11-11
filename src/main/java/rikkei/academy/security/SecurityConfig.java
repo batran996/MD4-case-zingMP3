@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import rikkei.academy.security.jwt.JwtAuthEntryPoint;
 import rikkei.academy.security.jwt.JwtAuthTokenFilter;
-import rikkei.academy.security.userprincipal.UserDetailServiceIMPL;
+import rikkei.academy.model.userprincipal.UserDetailServiceIMPL;
 
 @Configuration
 @EnableWebSecurity

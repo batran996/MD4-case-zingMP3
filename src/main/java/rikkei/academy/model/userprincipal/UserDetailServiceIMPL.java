@@ -1,4 +1,4 @@
-package rikkei.academy.security.userprincipal;
+package rikkei.academy.model.userprincipal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;

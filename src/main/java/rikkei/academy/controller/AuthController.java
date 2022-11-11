@@ -1,9 +1,6 @@
 package rikkei.academy.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,7 +17,7 @@ import rikkei.academy.model.Role;
 import rikkei.academy.model.RoleName;
 import rikkei.academy.model.User;
 import rikkei.academy.security.jwt.JwtProvider;
-import rikkei.academy.security.userprincipal.UserPrinciple;
+import rikkei.academy.model.userprincipal.UserPrinciple;
 import rikkei.academy.service.role.IRoleService;
 import rikkei.academy.service.user.IUSerService;
 

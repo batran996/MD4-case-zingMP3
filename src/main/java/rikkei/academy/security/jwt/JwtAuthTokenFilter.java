@@ -1,6 +1,6 @@
 package rikkei.academy.security.jwt;
 import org.springframework.web.filter.OncePerRequestFilter;
-import rikkei.academy.security.userprincipal.UserDetailServiceIMPL;
+import rikkei.academy.model.userprincipal.UserDetailServiceIMPL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import rikkei.academy.security.userprincipal.UserDetailServiceIMPL;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

@@ -8,9 +8,8 @@ import rikkei.academy.model.User;
 import rikkei.academy.model.song.Category;
 import rikkei.academy.model.song.Song;
 import rikkei.academy.repository.ISongRepository;
-import rikkei.academy.security.userprincipal.UserDetailServiceIMPL;
+import rikkei.academy.model.userprincipal.UserDetailServiceIMPL;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 

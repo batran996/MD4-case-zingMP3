@@ -1,4 +1,4 @@
-package rikkei.academy.security.userprincipal;
+package rikkei.academy.model.userprincipal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;

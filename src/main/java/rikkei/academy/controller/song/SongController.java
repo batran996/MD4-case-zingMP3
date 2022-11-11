@@ -11,18 +11,13 @@ import rikkei.academy.dto.request.SongDTO;
 import rikkei.academy.dto.response.ResponseMessage;
 
 //import rikkei.academy.dto.response.SongResponse;
-import rikkei.academy.model.song.Category;
-import rikkei.academy.model.song.Singer;
 import rikkei.academy.model.song.Song;
-import rikkei.academy.security.userprincipal.UserDetailServiceIMPL;
+import rikkei.academy.model.userprincipal.UserDetailServiceIMPL;
 import rikkei.academy.service.category.ICategoryService;
 import rikkei.academy.service.singer.ISingerService;
 import rikkei.academy.service.song.ISongService;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/song")

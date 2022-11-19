@@ -12,9 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import rikkei.academy.dto.request.SignIn;
-import rikkei.academy.dto.request.SignUpForm;
-import rikkei.academy.dto.request.UserDTO;
+import rikkei.academy.dto.request.*;
 import rikkei.academy.dto.response.JwtResponse;
 import rikkei.academy.dto.response.ResponseMessage;
 import rikkei.academy.model.Role;
@@ -25,6 +23,7 @@ import rikkei.academy.security.userprincipal.UserPrinciple;
 import rikkei.academy.service.role.IRoleService;
 import rikkei.academy.service.user.IUSerService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Optional;
@@ -87,9 +86,9 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtProvider.generateJwtToken(authentication);
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
-
         return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getName(), userPrinciple.getAvatar(), userPrinciple.getAuthorities()));
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> details(@PathVariable Long id) {
         Optional<User> user = uSerService.findById(id);
@@ -99,37 +98,40 @@ public class AuthController {
         return new ResponseEntity<>(user.get(), HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> editUser(
-            @PathVariable
-            Long id,
-            @RequestBody
-            UserDTO userDTO
-    ) {
-        Optional<User> userOptional = uSerService.findById(id);
-        if (!userOptional.isPresent()) {
-            return new ResponseEntity<>(new ResponseMessage("user not found!!!"), HttpStatus.NOT_FOUND);
-        }
+    @GetMapping("/profile")
+    public ResponseEntity<?> editUser() {
 
-        User user = userOptional.get();
-        user.setId(id);
-        user.setName(userDTO.getName());
-        user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
-        user.setEmail(userDTO.getEmail());
-        user.setAvatar(userDTO.getAvatar());
-        Set<Role> roles = new HashSet<>();
-        for (String idRole :
-                userDTO.getRoles()) {
-            Role userRole = roleService.findById(Long.parseLong(idRole));
-            roles.add(userRole);
-        }
-//  Role userRole = roleService.findByName(RoleName.USER).orElseThrow(() -> new RuntimeException("not_found"));
-        user.setRoles(roles);
-        uSerService.save(user);
-        return new ResponseEntity<>(new ResponseMessage("Edit user success!"), HttpStatus.OK);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return new ResponseEntity<>(principal, HttpStatus.OK);
+
     }
 
+    @PutMapping("/changer/pass")
+    public ResponseEntity<?> editPass(@RequestBody ChangerPassDTO changerPassDTO) {
 
+        UserPrinciple userPrinciple = (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String checkPass = userPrinciple.getPassword();
+//
+        if (!passwordEncoder.matches(changerPassDTO.getPassword(), checkPass)) {
+            return new ResponseEntity<>(new ResponseMessage("Mật khẩu không đúng,vui lòng nhập lại !"),HttpStatus.NOT_FOUND);
+        }
+        if(!changerPassDTO.getNewPass().equals(changerPassDTO.getRePass())){
+            return new ResponseEntity<>(new ResponseMessage("Mật khẩu mới không khớp,vui lòng nhập lại !"),HttpStatus.NOT_FOUND);
+        }
+        User user = uSerService.findByUsername(userPrinciple.getUsername()).get();
+        user.setPassword(passwordEncoder.encode(changerPassDTO.getNewPass()));
+        uSerService.save(user);
+        return new ResponseEntity<>(new ResponseMessage("Changer pass success !"),HttpStatus.OK);
+    }
+
+    @PutMapping("/changer/avatar")
+    public ResponseEntity<?>editAvatar(@RequestBody ChangeAvatar changeAvatar){
+        UserPrinciple userPrinciple = (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = userPrinciple.getUsername();
+        User user = uSerService.findByUsername(username).get();
+        user.setAvatar(changeAvatar.getAvatar());
+        uSerService.save(user);
+        return new ResponseEntity<>(new ResponseMessage("channger avatar success!"),HttpStatus.OK);
+    }
 
 }
